@@ -16,15 +16,6 @@ function deleteItem(type, id) {
     }
 }
 
-// Watch clip functionality
-function watchClip(url) {
-    if (url && url.trim() !== '') {
-        window.open(url, '_blank');
-    } else {
-        alert('No clip URL available');
-    }
-}
-
 // Form validation
 function validateForm(formId) {
     const form = document.getElementById(formId);
