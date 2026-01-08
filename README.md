@@ -106,7 +106,7 @@ A comprehensive Wikipedia-style website dedicated to the Netflix series "Strange
      ```
 
 4. **Access the Website**
-   - Open your browser and navigate to: `http://localhost/StrangerThings-Wikis/home.php`
+  - Open your browser and navigate to: `http://localhost/StrangerThings-Wikis/index.php`
 
 ## Project Structure
 
@@ -136,7 +136,7 @@ StrangerThings-Wikis/
 ├── includes/
 │   ├── header.php             # Reusable header with navigation
 │   └── footer.php             # Reusable footer
-├── home.php                   # Homepage with counters and quote of the day
+├── index.php                  # Homepage with counters and quote of the day
 ├── characters.php             # Characters listing and management
 ├── view-character.php         # Individual character view page
 ├── episodes.php               # Episodes listing and management

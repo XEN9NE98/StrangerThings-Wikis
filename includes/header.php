@@ -11,7 +11,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-stranger">
         <div class="container-fluid">
-            <a class="navbar-brand" href="home.php">
+            <a class="navbar-brand" href="index.php">
                 <img src="assets/image/Demogorgon.png" alt="Demogorgon" class="navbar-demogorgon-brand">
                 <span>Stranger Things Wiki</span>
             </a>
@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'home.php' ? 'active' : ''; ?>" href="home.php">
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>" href="index.php">
                             <i class="fas fa-home"></i> Home
                         </a>
                     </li>
