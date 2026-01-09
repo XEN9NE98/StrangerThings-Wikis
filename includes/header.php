@@ -1,3 +1,12 @@
+<?php
+// Start session for auth state
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Current logged in user (if any)
+$currentUser = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,11 +54,25 @@
                             <i class="fas fa-map-marker-alt"></i> Locations
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'login.php' ? 'active' : ''; ?>" href="login.php">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </a>
-                    </li>
+                    <?php if ($currentUser): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> <?php echo htmlspecialchars($currentUser['username']); ?>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="index.php">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="manage_account.php">Account</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="actions/logout.php">Logout</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'login.php' ? 'active' : ''; ?>" href="login.php">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>

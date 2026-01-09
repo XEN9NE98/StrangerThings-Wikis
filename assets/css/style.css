@@ -259,3 +259,57 @@ footer {
 .card-custom .text-muted {
     color: rgba(255, 255, 255, 0.82) !important;
 }
+
+/* Manage Account page specific styles */
+.manage-account h2 {
+    color: var(--stranger-light);
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px rgba(229,9,20,0.4);
+}
+
+.manage-account .card {
+    background: linear-gradient(135deg, var(--stranger-gray) 0%, #141414 100%);
+    border: 1px solid rgba(229, 9, 20, 0.25);
+    color: var(--stranger-light);
+}
+
+.manage-account .card .card-title {
+    color: var(--stranger-red);
+    font-weight: 700;
+}
+
+.manage-account .card .form-label {
+    color: rgba(255,255,255,0.9);
+}
+
+.manage-account .btn-outline-danger {
+    border: 2px solid rgba(229,9,20,0.9);
+    color: var(--stranger-red);
+    background: transparent;
+}
+
+.manage-account .btn-outline-danger:hover {
+    background-color: var(--stranger-red);
+    color: #fff;
+}
+
+/* Alerts on dark background */
+.alert {
+    background: linear-gradient(135deg, #1a1a1a 0%, #232323 100%);
+    color: var(--stranger-light);
+    border: 1px solid rgba(229,9,20,0.12);
+}
+.alert-success {
+    border-left: 6px solid #28a745;
+    background: linear-gradient(135deg, rgba(40,167,69,0.06) 0%, #1a1a1a 100%);
+    color: #cdeed1;
+}
+.alert-danger {
+    border-left: 6px solid var(--stranger-red);
+    background: linear-gradient(135deg, rgba(229,9,20,0.06) 0%, #1a1a1a 100%);
+    color: #ffd6d6;
+}
+
+@media (max-width: 576px) {
+    .manage-account .card { padding: 10px; }
+}
