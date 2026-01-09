@@ -92,3 +92,14 @@ INSERT INTO quotes (quote_text, description, character_id, episode_id) VALUES
 ('Mornings are for coffee and contemplation.', 'Chief Hopper\'s philosophy on starting the day.', 7, 1),
 ('She\'s our friend and she\'s crazy!', 'Dustin defending Eleven to the group.', 3, 2),
 ('Bitchin\'', 'Max\'s favorite expression of approval.', 8, NULL);
+
+-- Users table for authentication
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    password_reset_token VARCHAR(255) DEFAULT NULL,
+    password_reset_expires DATETIME DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
