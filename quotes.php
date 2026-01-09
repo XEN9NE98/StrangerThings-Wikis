@@ -43,9 +43,11 @@ while($ep = $episodesResult->fetch_assoc()) {
     <!-- Add New Quote Button -->
     <div class="row mb-4">
         <div class="col-12 text-end">
+            <?php if (!empty($currentUser)): ?>
             <button class="btn btn-stranger btn-lg" data-bs-toggle="modal" data-bs-target="#addQuoteModal">
                 <i class="fas fa-plus"></i> Add New Quote
             </button>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -88,6 +90,7 @@ while($ep = $episodesResult->fetch_assoc()) {
                     </div>
                     
                     <div class="action-buttons d-flex flex-wrap justify-content-center mt-3">
+                        <?php if (!empty($currentUser)): ?>
                         <button class="btn btn-sm btn-outline-stranger" 
                                 onclick="editQuote(<?php echo $quote['id']; ?>)">
                             <i class="fas fa-edit"></i> Edit
@@ -96,6 +99,7 @@ while($ep = $episodesResult->fetch_assoc()) {
                                 onclick="deleteItem('quote', <?php echo $quote['id']; ?>)">
                             <i class="fas fa-trash"></i> Delete
                         </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -104,6 +108,7 @@ while($ep = $episodesResult->fetch_assoc()) {
     </div>
 </div>
 
+<?php if (!empty($currentUser)): ?>
 <!-- Add Quote Modal -->
 <div class="modal fade" id="addQuoteModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -152,7 +157,9 @@ while($ep = $episodesResult->fetch_assoc()) {
     </div>
 </div>
 
-<!-- View Quote Modal -->
+        </div>
+
+        <!-- View Quote Modal -->
 <div class="modal fade" id="viewQuoteModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -191,7 +198,9 @@ while($ep = $episodesResult->fetch_assoc()) {
     </div>
 </div>
 
-<script>
+        <?php endif; ?>
+
+        <script>
 const characters = <?php echo json_encode($characters); ?>;
 const episodes = <?php echo json_encode($episodes); ?>;
 

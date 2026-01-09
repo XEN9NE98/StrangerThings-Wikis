@@ -23,9 +23,11 @@ $result = $conn->query($query);
     <!-- Add New Character Button -->
     <div class="row mb-4">
         <div class="col-12 text-end">
+            <?php if (!empty($currentUser)): ?>
             <button class="btn btn-stranger btn-lg" data-bs-toggle="modal" data-bs-target="#addCharacterModal">
                 <i class="fas fa-plus"></i> Add New Character
             </button>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -50,6 +52,7 @@ $result = $conn->query($query);
                         <a href="view-character.php?id=<?php echo $character['id']; ?>" class="btn btn-sm btn-outline-stranger">
                             <i class="fas fa-eye"></i> View
                         </a>
+                        <?php if (!empty($currentUser)): ?>
                         <button class="btn btn-sm btn-outline-stranger" 
                                 onclick="editCharacter(<?php echo $character['id']; ?>)">
                             <i class="fas fa-edit"></i> Edit
@@ -58,6 +61,7 @@ $result = $conn->query($query);
                                 onclick="deleteItem('character', <?php echo $character['id']; ?>)">
                             <i class="fas fa-trash"></i> Delete
                         </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -66,6 +70,7 @@ $result = $conn->query($query);
     </div>
 </div>
 
+<?php if (!empty($currentUser)): ?>
 <!-- Add Character Modal -->
 <div class="modal fade" id="addCharacterModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -159,7 +164,9 @@ $result = $conn->query($query);
     </div>
 </div>
 
-<script>
+        <?php endif; ?>
+
+        <script>
 function viewCharacter(id) {
     $.ajax({
         url: 'actions/get_character.php',

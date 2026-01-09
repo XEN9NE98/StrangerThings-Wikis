@@ -23,9 +23,11 @@ $result = $conn->query($query);
     <!-- Add New Episode Button -->
     <div class="row mb-4">
         <div class="col-12 text-end">
+            <?php if (!empty($currentUser)): ?>
             <button class="btn btn-stranger btn-lg" data-bs-toggle="modal" data-bs-target="#addEpisodeModal">
                 <i class="fas fa-plus"></i> Add New Episode
             </button>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -56,6 +58,7 @@ $result = $conn->query($query);
                         <a href="view-episode.php?id=<?php echo $episode['id']; ?>" class="btn btn-sm btn-outline-stranger">
                             <i class="fas fa-eye"></i> View
                         </a>
+                        <?php if (!empty($currentUser)): ?>
                         <button class="btn btn-sm btn-outline-stranger" 
                                 onclick="editEpisode(<?php echo $episode['id']; ?>)">
                             <i class="fas fa-edit"></i> Edit
@@ -64,6 +67,7 @@ $result = $conn->query($query);
                                 onclick="deleteItem('episode', <?php echo $episode['id']; ?>)">
                             <i class="fas fa-trash"></i> Delete
                         </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -72,6 +76,7 @@ $result = $conn->query($query);
     </div>
 </div>
 
+<?php if (!empty($currentUser)): ?>
 <!-- Add Episode Modal -->
 <div class="modal fade" id="addEpisodeModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -122,6 +127,7 @@ $result = $conn->query($query);
             </form>
         </div>
     </div>
+
 </div>
 
 <!-- View Episode Modal -->
@@ -163,7 +169,9 @@ $result = $conn->query($query);
     </div>
 </div>
 
-<script>
+        <?php endif; ?>
+
+        <script>
 function viewEpisode(id) {
     $.ajax({
         url: 'actions/get_episode.php',

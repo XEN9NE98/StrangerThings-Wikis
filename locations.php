@@ -23,9 +23,11 @@ $result = $conn->query($query);
     <!-- Add New Location Button -->
     <div class="row mb-4">
         <div class="col-12 text-end">
+            <?php if (!empty($currentUser)): ?>
             <button class="btn btn-stranger btn-lg" data-bs-toggle="modal" data-bs-target="#addLocationModal">
                 <i class="fas fa-plus"></i> Add New Location
             </button>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -46,6 +48,7 @@ $result = $conn->query($query);
                         <a href="view-location.php?id=<?php echo $location['id']; ?>" class="btn btn-sm btn-outline-stranger">
                             <i class="fas fa-eye"></i> View
                         </a>
+                        <?php if (!empty($currentUser)): ?>
                         <button class="btn btn-sm btn-outline-stranger" 
                                 onclick="editLocation(<?php echo $location['id']; ?>)">
                             <i class="fas fa-edit"></i> Edit
@@ -54,6 +57,7 @@ $result = $conn->query($query);
                                 onclick="deleteItem('location', <?php echo $location['id']; ?>)">
                             <i class="fas fa-trash"></i> Delete
                         </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -62,6 +66,7 @@ $result = $conn->query($query);
     </div>
 </div>
 
+<?php if (!empty($currentUser)): ?>
 <!-- Add Location Modal -->
 <div class="modal fade" id="addLocationModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -99,7 +104,9 @@ $result = $conn->query($query);
     </div>
 </div>
 
-<!-- View Location Modal -->
+        </div>
+
+        <!-- View Location Modal -->
 <div class="modal fade" id="viewLocationModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -138,7 +145,9 @@ $result = $conn->query($query);
     </div>
 </div>
 
-<script>
+        <?php endif; ?>
+
+        <script>
 function viewLocation(id) {
     $.ajax({
         url: 'actions/get_location.php',
