@@ -82,6 +82,4 @@ $currentUser = isset($_SESSION['user']) ? $_SESSION['user'] : null;
             </div>
         </div>
     </nav>
-    <!-- Hidden YouTube player container for background music -->
-    <div id="yt-player" style="display:none; width:0; height:0; overflow:hidden;"></div>
     <div class="container-fluid py-4">

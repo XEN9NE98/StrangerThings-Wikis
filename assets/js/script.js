@@ -41,8 +41,51 @@ function validateForm(formId) {
     }
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
+// Delete functionality
+function deleteItem(type, id) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        $.ajax({
+            url: 'actions/delete.php',
+            type: 'POST',
+            data: { type: type, id: id },
+            success: function(response) {
+                alert(response);
+                location.reload();
+            },
+            error: function() {
+                alert('Error deleting item');
+            }
+        });
+    }
+}
+
+// Form validation
+function validateForm(formId) {
+    const form = document.getElementById(formId);
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields');
+            }
+        });
+    }
+}
+
+// Reusable initialization function for page content
+function initPage() {
     // Add animation to counter numbers
     const counters = document.querySelectorAll('.counter-number');
     counters.forEach(counter => {
@@ -59,66 +102,80 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 20);
     });
-});
 
-/* Background music (YouTube IFrame) */
+    // Re-bind forms if they exist on the new page
+    // (You might need to identify specific forms here or call validateForm from the page script)
+}
+
+/* Background music (HTML5 Audio) + SPA Navigation */
 (function(){
-    // Video ID from provided YouTube link
-    const YT_VIDEO_ID = 'Jmv5pTyz--I';
-    let player;
+    const AUDIO_SRC = 'assets/audio/Stranger Things Main Theme [01qStKYB7ts].mp3';
+    let audio = new Audio(AUDIO_SRC);
+    audio.loop = true;
     let isPlaying = false;
 
-    // Load YouTube IFrame API
-    function loadYouTubeAPI(cb) {
-        if (window.YT && window.YT.Player) return cb();
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        window.onYouTubeIframeAPIReady = cb;
+    // --- Audio Logic ---
+
+    function initAudio() {
+        // Retrieve saved time only on full reload
+        // Check if page was reloaded
+        let isReload = false;
+        try {
+            if (performance.getEntriesByType) {
+                const entries = performance.getEntriesByType("navigation");
+                if (entries.length > 0 && entries[0].type === 'reload') {
+                    isReload = true;
+                }
+            } else if (window.performance && window.performance.navigation) {
+                if (window.performance.navigation.type === 1) isReload = true;
+            }
+        } catch(e) {}
+
+        let savedTime = 0;
+        if (!isReload) {
+            try {
+                const t = localStorage.getItem('bgmTime');
+                if (t) savedTime = parseFloat(t);
+            } catch(e){}
+        }
+        
+        if (savedTime && !isNaN(savedTime)) {
+            audio.currentTime = savedTime;
+        }
+
+        const pref = localStorage.getItem('bgmEnabled');
+        // Default to true ('1') if null, OR if explicitly '1'
+        const shouldPlay = pref === null ? true : (pref === '1');
+
+        if (pref === null) {
+            localStorage.setItem('bgmEnabled', '1');
+        }
+
+        if (shouldPlay) {
+            playAudio();
+        } else {
+            updateAudioIcon(false);
+        }
     }
 
-    function createPlayer() {
-        player = new YT.Player('yt-player', {
-            height: '0',
-            width: '0',
-            videoId: YT_VIDEO_ID,
-            playerVars: {
-                autoplay: 1,
-                controls: 0,
-                loop: 1,
-                modestbranding: 1,
-                rel: 0,
-                iv_load_policy: 3,
-                playsinline: 1,
-                playlist: YT_VIDEO_ID
-            },
-            events: {
-                onReady: function(e) {
-                    // Attempt to autoplay; many browsers block autoplay with sound.
-                    const pref = localStorage.getItem('bgmEnabled');
-                    const shouldPlay = pref === null ? true : (pref === '1');
-                    if (shouldPlay) {
-                        try {
-                            e.target.playVideo();
-                        } catch (err) {
-                            // ignore
-                        }
-                    }
-                    updateAudioIcon(shouldPlay && e.target.getPlayerState() === YT.PlayerState.PLAYING);
-                },
-                onStateChange: function(e) {
-                    // If video ended, try to loop (safety in addition to playerVars.loop)
-                    if (e.data === YT.PlayerState.ENDED) {
-                        try { e.target.playVideo(); } catch (err) {}
-                    }
-                    // Update icon based on playing or paused
-                    const playing = e.data === YT.PlayerState.PLAYING;
-                    isPlaying = playing;
-                    updateAudioIcon(playing);
-                }
-            }
-        });
+    function playAudio() {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                isPlaying = true;
+                updateAudioIcon(true);
+            }).catch(error => {
+                console.log("Autoplay prevented:", error);
+                isPlaying = false;
+                updateAudioIcon(false);
+            });
+        }
+    }
+
+    function pauseAudio() {
+        audio.pause();
+        isPlaying = false;
+        updateAudioIcon(false);
     }
 
     function updateAudioIcon(playing) {
@@ -134,38 +191,125 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function toggleAudio() {
-        if (!player) {
-            loadYouTubeAPI(function(){ createPlayer(); });
-            // wait a moment then set enabled flag
-            localStorage.setItem('bgmEnabled', '1');
-            return;
-        }
         if (isPlaying) {
-            player.pauseVideo();
+            pauseAudio();
             localStorage.setItem('bgmEnabled', '0');
         } else {
-            player.playVideo();
+            playAudio();
             localStorage.setItem('bgmEnabled', '1');
         }
     }
 
-    // Wire the navbar button
-    document.addEventListener('DOMContentLoaded', function() {
+    function bindAudioToggle() {
         const btn = document.getElementById('audioToggle');
-        if (!btn) return;
-        btn.addEventListener('click', function(e){
-            e.preventDefault();
-            toggleAudio();
+        if (btn) {
+            // Remove old listeners to be safe (though swapping DOM usually clears them)
+            const newBtn = btn.cloneNode(true); 
+            btn.parentNode.replaceChild(newBtn, btn);
+            
+            newBtn.addEventListener('click', function(e){
+                e.preventDefault();
+                toggleAudio();
+            });
+            // Update icon state on new button
+            updateAudioIcon(isPlaying);
+        }
+    }
+
+    // --- SPA Navigation Logic ---
+
+    function handleNavigation(url) {
+        // Show loading state if desired (optional)
+        
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // Update Title
+                document.title = doc.title;
+
+                // Replace Navbar (to update active states)
+                const newNav = doc.querySelector('nav.navbar');
+                const oldNav = document.querySelector('nav.navbar');
+                if (newNav && oldNav) {
+                    oldNav.replaceWith(newNav);
+                }
+
+                // Replace Main Content
+                // Note: header.php starts .container-fluid, footer.php ends it. 
+                // We assume the main layout is consistent.
+                const newContent = doc.querySelector('.container-fluid.py-4');
+                const oldContent = document.querySelector('.container-fluid.py-4');
+                
+                if (newContent && oldContent) {
+                    oldContent.innerHTML = newContent.innerHTML;
+                }
+
+                // Re-bind Audio Toggle (since navbar changed)
+                bindAudioToggle();
+
+                // Re-init Page Scripts (counters, etc)
+                initPage();
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            })
+            .catch(err => {
+                console.error('Navigation failed', err);
+                // Fallback to full reload
+                window.location.href = url;
+            });
+    }
+
+    // --- Initialization ---
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initPage();
+        initAudio();
+        bindAudioToggle();
+
+        // Intercept Link Clicks
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (link) {
+                const href = link.getAttribute('href');
+                
+                // Filter links:
+                // 1. Must be local
+                // 2. Not hash links (#)
+                // 3. Not target="_blank"
+                // 4. Not starting with 'actions/' (allow form actions/logouts to reload)
+                
+                if (href && 
+                    href.indexOf('#') !== 0 && 
+                    !link.target && 
+                    !href.startsWith('http') && // Assuming relative links
+                    !href.includes('actions/') && 
+                    !link.hasAttribute('data-no-spa')) 
+                {
+                    e.preventDefault();
+                    history.pushState(null, '', href);
+                    handleNavigation(href);
+                }
+            }
         });
 
-        // Initialize player if preference says enabled
-        const pref = localStorage.getItem('bgmEnabled');
-        const shouldAutoLoad = pref === null ? true : (pref === '1');
-        if (shouldAutoLoad) {
-            loadYouTubeAPI(function(){ createPlayer(); });
-        } else {
-            updateAudioIcon(false);
+        // Handle Back/Forward buttons
+        window.addEventListener('popstate', function() {
+            handleNavigation(window.location.pathname);
+        });
+    });
+
+    // Save time on actual unload (tab close/refresh)
+    window.addEventListener('beforeunload', function() {
+        if (audio && !audio.paused) {
+            try {
+                localStorage.setItem('bgmTime', audio.currentTime);
+            } catch(e) {}
         }
     });
+
 })();
 
