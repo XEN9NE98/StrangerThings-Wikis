@@ -9,6 +9,20 @@ require_once 'includes/header.php';
 
             <h2 class="mb-4">Login</h2>
 
+            <!-- Error/Success Messages -->
+            <?php if (!empty($_SESSION['error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-circle me-2"></i><?php echo htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($_SESSION['success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i><?php echo htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <!-- Info Alert -->
             <div class="alert alert-info mb-4" style="border-left: 5px solid var(--stranger-red); background-color: rgba(229, 9, 20, 0.1); border-color: var(--stranger-red);">
                 <i class="fas fa-info-circle me-2" style="color: var(--stranger-red);"></i>

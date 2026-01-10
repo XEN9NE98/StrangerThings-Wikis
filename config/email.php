@@ -21,6 +21,9 @@ function sendEmail($to, $subject, $body, $isHtml = false)
         $mail->Password   = $_ENV['GMAIL_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        
+        // Enable verbose debug output (comment out in production)
+        // $mail->SMTPDebug = 2;
 
         $mail->setFrom($_ENV['MAIL_FROM_ADDRESS'], $_ENV['MAIL_FROM_NAME']);
         $mail->addAddress($to);
@@ -37,6 +40,7 @@ function sendEmail($to, $subject, $body, $isHtml = false)
 
     } catch (Exception $e) {
         error_log("Email Error: " . $mail->ErrorInfo);
+        error_log("Exception Message: " . $e->getMessage());
         return false;
     }
 }

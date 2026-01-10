@@ -52,7 +52,7 @@ if ($token) {
                     <label for="password_confirm" class="form-label">Confirm New Password</label>
                     <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Set new password</button>
+                <button type="submit" class="btn btn-outline-stranger ms-2">Set new password</button>
                 <a href="login.php" class="btn btn-link ms-2">Back to login</a>
             </form>
         </div>
