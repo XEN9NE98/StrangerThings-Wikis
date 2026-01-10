@@ -1,1 +1,9 @@
 .env
+/vendor
+EMAIL_SETUP.md
+GMAIL_SETUP.md
+QUICK_START_EMAIL.md
+SIMPLE_EMAIL_SETUP.md
+email_log.txt
+start-mailpit.bat
+start-mailpit.sh
