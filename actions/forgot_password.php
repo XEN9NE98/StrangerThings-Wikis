@@ -40,7 +40,7 @@ if ($ok) {
     // Build reset link using current host and request URI
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
     $base = $protocol . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['REQUEST_URI']), '/\\');
-    $resetLink = $base . '/reset_password.php?token=' . urlencode($token);
+    $resetLink = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/reset_password.php?token=' . urlencode($token);
     
     // Build simple HTML email
     $emailSubject = "Password Reset Request - Stranger Things Wiki";
