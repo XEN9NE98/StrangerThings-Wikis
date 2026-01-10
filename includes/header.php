@@ -73,8 +73,15 @@ $currentUser = isset($_SESSION['user']) ? $_SESSION['user'] : null;
                             </a>
                         </li>
                     <?php endif; ?>
+                    <li class="nav-item">
+                        <a id="audioToggle" class="nav-link" href="#" role="button" title="Toggle background music">
+                            <i id="audioIcon" class="fas fa-volume-up"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- Hidden YouTube player container for background music -->
+    <div id="yt-player" style="display:none; width:0; height:0; overflow:hidden;"></div>
     <div class="container-fluid py-4">
