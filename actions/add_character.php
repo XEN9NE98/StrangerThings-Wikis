@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $conn = getDBConnection();
     $stmt = $conn->prepare("INSERT INTO characters (name, actor_name, description, image_url, youtube_clip_url, age, born_date, height) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssisss", $name, $actor_name, $description, $image_url, $youtube_clip_url, $age, $born_date, $height);
+    $stmt->bind_param("sssssiss", $name, $actor_name, $description, $image_url, $youtube_clip_url, $age, $born_date, $height);
     
     if ($stmt->execute()) {
         header("Location: ../characters.php?success=added");
