@@ -104,8 +104,6 @@ $result = $conn->query($query);
     </div>
 </div>
 
-        </div>
-
         <!-- View Location Modal -->
 <div class="modal fade" id="viewLocationModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -146,64 +144,6 @@ $result = $conn->query($query);
 </div>
 
         <?php endif; ?>
-
-        <script>
-function viewLocation(id) {
-    $.ajax({
-        url: 'actions/get_location.php',
-        type: 'GET',
-        data: { id: id },
-        success: function(data) {
-            const location = JSON.parse(data);
-            $('#viewLocationTitle').html('<i class="fas fa-map-marker-alt"></i> ' + location.name);
-            $('#viewLocationBody').html(`
-                <div class="row">
-                    <div class="col-md-5">
-                        <img src="${location.image_url}" class="img-fluid rounded" alt="${location.name}">
-                    </div>
-                    <div class="col-md-7">
-                        <p><strong style="color: var(--stranger-red);">Description:</strong></p>
-                        <p>${location.description}</p>
-                    </div>
-                </div>
-            `);
-            $('#viewLocationModal').modal('show');
-        }
-    });
-}
-
-function editLocation(id) {
-    $.ajax({
-        url: 'actions/get_location.php',
-        type: 'GET',
-        data: { id: id },
-        success: function(data) {
-            const location = JSON.parse(data);
-            $('#editLocationBody').html(`
-                <input type="hidden" name="id" value="${location.id}">
-                <div class="mb-3">
-                    <label for="edit_name" class="form-label">Location Name *</label>
-                    <input type="text" class="form-control" id="edit_name" name="name" value="${location.name}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_description" class="form-label">Description *</label>
-                    <textarea class="form-control" id="edit_description" name="description" rows="4" required>${location.description}</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_image_url" class="form-label">Image URL *</label>
-                    <input type="url" class="form-control" id="edit_image_url" name="image_url" value="${location.image_url}" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="edit_maps_url" class="form-label">Real-life Location Maps URL</label>
-                    <input type="url" class="form-control" id="edit_maps_url" name="maps_url" value="${location.maps_url || ''}" placeholder="Google Maps link">
-                </div>
-            `);
-            $('#editLocationModal').modal('show');
-        }
-    });
-}
-</script>
 
 <?php 
 $conn->close();

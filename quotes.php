@@ -157,8 +157,6 @@ while($ep = $episodesResult->fetch_assoc()) {
     </div>
 </div>
 
-        </div>
-
         <!-- View Quote Modal -->
 <div class="modal fade" id="viewQuoteModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -199,76 +197,6 @@ while($ep = $episodesResult->fetch_assoc()) {
 </div>
 
         <?php endif; ?>
-
-        <script>
-const characters = <?php echo json_encode($characters); ?>;
-const episodes = <?php echo json_encode($episodes); ?>;
-
-function viewQuote(id) {
-    $.ajax({
-        url: 'actions/get_quote.php',
-        type: 'GET',
-        data: { id: id },
-        success: function(data) {
-            const quote = JSON.parse(data);
-            $('#viewQuoteBody').html(`
-                <div class="quote-of-day">
-                    <p class="quote-text">"${quote.quote_text}"</p>
-                    ${quote.description ? `<p><strong style="color: var(--stranger-red);">Context:</strong><br>${quote.description}</p>` : ''}
-                    ${quote.character_name ? `<p><strong style="color: var(--stranger-red);">Said by:</strong> ${quote.character_name}</p>` : ''}
-                    ${quote.episode_title ? `<p><strong style="color: var(--stranger-red);">From Episode:</strong> ${quote.episode_title}</p>` : ''}
-                </div>
-            `);
-            $('#viewQuoteModal').modal('show');
-        }
-    });
-}
-
-function editQuote(id) {
-    $.ajax({
-        url: 'actions/get_quote.php',
-        type: 'GET',
-        data: { id: id },
-        success: function(data) {
-            const quote = JSON.parse(data);
-            let characterOptions = '<option value="">-- Select Character --</option>';
-            characters.forEach(char => {
-                characterOptions += `<option value="${char.id}" ${quote.character_id == char.id ? 'selected' : ''}>${char.name}</option>`;
-            });
-            
-            let episodeOptions = '<option value="">-- Select Episode --</option>';
-            episodes.forEach(ep => {
-                episodeOptions += `<option value="${ep.id}" ${quote.episode_id == ep.id ? 'selected' : ''}>S${ep.season}E${ep.episode_number} - ${ep.title}</option>`;
-            });
-            
-            $('#editQuoteBody').html(`
-                <input type="hidden" name="id" value="${quote.id}">
-                <div class="mb-3">
-                    <label for="edit_quote_text" class="form-label">Quote Text *</label>
-                    <textarea class="form-control" id="edit_quote_text" name="quote_text" rows="3" required>${quote.quote_text}</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_description" class="form-label">Description/Context</label>
-                    <textarea class="form-control" id="edit_description" name="description" rows="3">${quote.description || ''}</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_character_id" class="form-label">Character</label>
-                    <select class="form-select" id="edit_character_id" name="character_id">
-                        ${characterOptions}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_episode_id" class="form-label">Episode</label>
-                    <select class="form-select" id="edit_episode_id" name="episode_id">
-                        ${episodeOptions}
-                    </select>
-                </div>
-            `);
-            $('#editQuoteModal').modal('show');
-        }
-    });
-}
-</script>
 
 <?php 
 $conn->close();

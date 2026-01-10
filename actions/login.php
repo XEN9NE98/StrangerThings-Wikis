@@ -5,6 +5,13 @@ require_once __DIR__ . '/../config/database.php';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 
+// Verify CSRF Token
+if (!isset($_POST['csrf_token']) || !verifyCsrfToken($_POST['csrf_token'])) {
+    $_SESSION['error'] = 'Invalid CSRF token.';
+    header('Location: ../login.php');
+    exit;
+}
+
 if (empty($email) || empty($password)) {
     $_SESSION['error'] = 'Please provide both email and password.';
     header('Location: ../login.php');

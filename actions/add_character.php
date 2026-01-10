@@ -3,6 +3,11 @@ require_once 'require_login.php';
 require_once '../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verify CSRF Token
+    if (!isset($_POST['csrf_token']) || !verifyCsrfToken($_POST['csrf_token'])) {
+        die("Error: Invalid CSRF token.");
+    }
+
     $name = $_POST['name'];
     $actor_name = $_POST['actor_name'];
     $description = $_POST['description'];

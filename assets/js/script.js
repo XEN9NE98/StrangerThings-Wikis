@@ -1,53 +1,17 @@
 // Delete functionality
 function deleteItem(type, id) {
     if (confirm('Are you sure you want to delete this item?')) {
+        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+        
         $.ajax({
             url: 'actions/delete.php',
             type: 'POST',
-            data: { type: type, id: id },
-            success: function(response) {
-                alert(response);
-                location.reload();
+            data: { 
+                type: type, 
+                id: id,
+                csrf_token: csrfToken 
             },
-            error: function() {
-                alert('Error deleting item');
-            }
-        });
-    }
-}
-
-// Form validation
-function validateForm(formId) {
-    const form = document.getElementById(formId);
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
-            let isValid = true;
-            
-            inputs.forEach(input => {
-                if (!input.value.trim()) {
-                    isValid = false;
-                    input.classList.add('is-invalid');
-                } else {
-                    input.classList.remove('is-invalid');
-                }
-            });
-            
-            if (!isValid) {
-                e.preventDefault();
-                alert('Please fill in all required fields');
-            }
-        });
-    }
-}
-
-// Delete functionality
-function deleteItem(type, id) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        $.ajax({
-            url: 'actions/delete.php',
-            type: 'POST',
-            data: { type: type, id: id },
             success: function(response) {
                 alert(response);
                 location.reload();
@@ -102,9 +66,6 @@ function initPage() {
             }
         }, 20);
     });
-
-    // Re-bind forms if they exist on the new page
-    // (You might need to identify specific forms here or call validateForm from the page script)
 }
 
 /* Background music (HTML5 Audio) + SPA Navigation */
@@ -275,12 +236,6 @@ function initPage() {
             const link = e.target.closest('a');
             if (link) {
                 const href = link.getAttribute('href');
-                
-                // Filter links:
-                // 1. Must be local
-                // 2. Not hash links (#)
-                // 3. Not target="_blank"
-                // 4. Not starting with 'actions/' (allow form actions/logouts to reload)
                 
                 if (href && 
                     href.indexOf('#') !== 0 && 

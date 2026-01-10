@@ -80,6 +80,7 @@ $result = $conn->query($query);
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="actions/add_character.php" method="POST">
+                <?php csrfInput(); ?>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Character Name *</label>
@@ -152,6 +153,7 @@ $result = $conn->query($query);
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="actions/edit_character.php" method="POST">
+                <?php csrfInput(); ?>
                 <div class="modal-body" id="editCharacterBody">
                     <!-- Content loaded via JavaScript -->
                 </div>
@@ -165,90 +167,6 @@ $result = $conn->query($query);
 </div>
 
         <?php endif; ?>
-
-        <script>
-function viewCharacter(id) {
-    $.ajax({
-        url: 'actions/get_character.php',
-        type: 'GET',
-        data: { id: id },
-        success: function(data) {
-            const character = JSON.parse(data);
-            $('#viewCharacterTitle').html('<i class="fas fa-user"></i> ' + character.name);
-            let youtubeEmbed = '';
-            if (character.youtube_clip_url) {
-                const videoId = character.youtube_clip_url.split('v=')[1]?.split('&')[0];
-                if (videoId) {
-                    youtubeEmbed = `<div class="mb-3"><iframe width="100%" height="400" src="https://www.youtube.com/embed/${videoId}" title="${character.name} Clip" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
-                }
-            }
-            $('#viewCharacterBody').html(`
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="${character.image_url}" class="img-fluid rounded" alt="${character.name}">
-                    </div>
-                    <div class="col-md-8">
-                        <p><strong style="color: var(--stranger-red);">Actor:</strong> ${character.actor_name}</p>
-                        <p><strong style="color: var(--stranger-red);">Description:</strong></p>
-                        <p>${character.description}</p>
-                    </div>
-                </div>
-                ${youtubeEmbed}
-            `);
-            $('#viewCharacterModal').modal('show');
-        }
-    });
-}
-
-function editCharacter(id) {
-    $.ajax({
-        url: 'actions/get_character.php',
-        type: 'GET',
-        data: { id: id },
-        success: function(data) {
-            const character = JSON.parse(data);
-            $('#editCharacterBody').html(`
-                <input type="hidden" name="id" value="${character.id}">
-                <div class="mb-3">
-                    <label for="edit_name" class="form-label">Character Name *</label>
-                    <input type="text" class="form-control" id="edit_name" name="name" value="${character.name}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_actor_name" class="form-label">Actor Name *</label>
-                    <input type="text" class="form-control" id="edit_actor_name" name="actor_name" value="${character.actor_name}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_description" class="form-label">Description *</label>
-                    <textarea class="form-control" id="edit_description" name="description" rows="4" required>${character.description}</textarea>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label for="edit_age" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="edit_age" name="age" value="${character.age || ''}">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="edit_born_date" class="form-label">Born Date</label>
-                        <input type="date" class="form-control" id="edit_born_date" name="born_date" value="${character.born_date || ''}">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="edit_height" class="form-label">Height</label>
-                        <input type="text" class="form-control" id="edit_height" name="height" value="${character.height || ''}" placeholder="e.g., 5'10&quot;">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_image_url" class="form-label">Image URL *</label>
-                    <input type="url" class="form-control" id="edit_image_url" name="image_url" value="${character.image_url}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="edit_youtube_clip_url" class="form-label">YouTube Clip URL</label>
-                    <input type="url" class="form-control" id="edit_youtube_clip_url" name="youtube_clip_url" value="${character.youtube_clip_url || ''}">
-                </div>
-            `);
-            $('#editCharacterModal').modal('show');
-        }
-    });
-}
-</script>
 
 <?php 
 $conn->close();

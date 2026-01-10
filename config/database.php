@@ -54,4 +54,7 @@ function getQuoteOfTheDay() {
     $conn->close();
     return $quote;
 }
+
+// Include CSRF helper
+require_once __DIR__ . '/../includes/csrf.php';
 ?>
