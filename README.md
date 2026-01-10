@@ -11,7 +11,7 @@ A comprehensive Wikipedia-style website dedicated to the Netflix series "Strange
   - Update username and email
   - Change password with current password verification
   - Delete account permanently (with confirmation)
-- **Password Recovery**: Reset forgotten passwords via email using PHPMailer
+- **Password Recovery**: Reset forgotten passwords via email using PHPMailer with explicit account existence checks
 - **Session Management**: Secure session-based authentication
 - **Login/Logout Notifications**: Toast-style alerts for authentication actions
 
@@ -34,7 +34,7 @@ A comprehensive Wikipedia-style website dedicated to the Netflix series "Strange
   - Styled info cards with key details
 - **Authenticated User Operations**:
   - Add new characters
-  - Edit character information
+  - Edit character information (powered by AJAX modal)
   - Delete characters (with confirmation)
 
 ### 3. Episodes Section
@@ -49,7 +49,7 @@ A comprehensive Wikipedia-style website dedicated to the Netflix series "Strange
   - Season and episode number information
   - Formatted air dates
   - Embedded 16:9 YouTube video players
-- Full CRUD operations for authenticated users
+- Full CRUD operations for authenticated users (Add/Edit/Delete)
 
 ### 4. Quotes Section
 - Curated collection of memorable quotes
@@ -157,7 +157,7 @@ StrangerThings-Wikis/
 │   ├── login.php                     # Handle user login
 │   ├── logout.php                    # Handle user logout
 │   ├── register.php                  # Handle user registration
-│   ├── forgot_password.php           # Handle password reset requests
+│   ├── forgot_password.php           # Handle password reset requests (Checks account existence)
 │   ├── reset_password.php            # Process password reset
 │   ├── change_password.php           # Change password (authenticated)
 │   ├── update_account.php            # Update profile (authenticated)
@@ -181,7 +181,7 @@ StrangerThings-Wikis/
 │   │   └── style.css                 # Stranger Things theme + responsive design
 │   ├── image/                        # Images and logos
 │   └── js/
-│       └── script.js                 # Client-side functionality
+│       └── script.js                 # Client-side functionality (Includes dynamic modal handling)
 ├── config/
 │   ├── database.php                  # Database connection & helper functions
 │   └── email.php                     # Email configuration & sendEmail() function
@@ -276,6 +276,7 @@ Similar structure with relevant fields for each entity
 
 ### Password Management
 - **Forgot Password**: Email-based reset links (1-hour expiry)
+  - *Security Update*: Checks if account exists before sending email to prevent spam/abuse
 - **Change Password**: Current password verification required
 - **Password Reset**: Secure token-based reset process
 - **Password Policy**: Minimum 6 characters for reset, 8+ for account changes
@@ -326,6 +327,7 @@ Similar structure with relevant fields for each entity
 2. **Login**: Access `/login.php` with email and password
 3. **Add Content**: Click "Add New [Item]" on any section
 4. **Edit Content**: Click "Edit" button on item cards
+   - A modal will appear pre-filled with the item's current data
 5. **Delete Content**: Click "Delete" (confirmation required)
 6. **Manage Account**: Click username → "Account Settings"
    - Update email/username
@@ -336,7 +338,7 @@ Similar structure with relevant fields for each entity
 1. Go to Login page
 2. Click "Forgot password?" button
 3. Enter email address
-4. Check email for reset link (valid 1 hour)
+4. If account exists, check email for reset link (valid 1 hour)
 5. Click link and enter new password
 6. Login with new credentials
 
