@@ -134,6 +134,17 @@ body {
     color: var(--stranger-light);
 }
 
+/* Description text truncation - limit to 2 lines with ellipsis */
+.card-text.description-preview {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    max-height: 3em;
+}
+
 .btn-stranger {
     background-color: var(--stranger-red);
     color: white;
@@ -161,6 +172,17 @@ body {
 .btn-outline-stranger:hover {
     background-color: var(--stranger-red);
     color: white;
+}
+
+.btn-link {
+    color: var(--stranger-red) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-link:hover {
+    color: #ff0a16 !important;
+    text-decoration: underline;
 }
 
 .page-header {
@@ -205,6 +227,63 @@ body {
 
 .modal-header {
     border-bottom: 1px solid var(--stranger-red);
+}
+
+/* Login Notification */
+.login-notification {
+    background: linear-gradient(135deg, #1a472a 0%, #0d2818 100%);
+    border: 2px solid #27d346 !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(39, 211, 70, 0.3);
+    animation: slideIn 0.5s ease-out;
+}
+
+.login-notification .alert-success {
+    background-color: transparent;
+    color: var(--stranger-light);
+}
+
+.login-notification i {
+    color: #27d346;
+    text-shadow: 0 0 8px rgba(39, 211, 70, 0.6);
+}
+
+.login-notification .btn-close {
+    filter: invert(1);
+}
+
+/* Logout Notification */
+.logout-notification {
+    background: linear-gradient(135deg, #3a3a1a 0%, #2a2a10 100%);
+    border: 2px solid #ff9800 !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    animation: slideIn 0.5s ease-out;
+}
+
+.logout-notification .alert-warning {
+    background-color: transparent;
+    color: var(--stranger-light);
+}
+
+.logout-notification i {
+    color: #ff9800;
+    text-shadow: 0 0 8px rgba(255, 152, 0, 0.6);
+}
+
+.logout-notification .btn-close {
+    filter: invert(1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .modal-footer {

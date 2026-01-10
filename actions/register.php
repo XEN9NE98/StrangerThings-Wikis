@@ -7,9 +7,11 @@ $username = isset($_POST['username']) ? trim($_POST['username']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 $password_confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
+$security_question = isset($_POST['security_question']) ? trim($_POST['security_question']) : '';
+$security_answer = isset($_POST['security_answer']) ? trim($_POST['security_answer']) : '';
 
-if (empty($username) || empty($email) || empty($password) || empty($password_confirm)) {
-    $_SESSION['error'] = 'Please fill in all fields.';
+if (empty($username) || empty($email) || empty($password) || empty($password_confirm) || empty($security_question) || empty($security_answer)) {
+    $_SESSION['error'] = 'Please fill in all fields including security question.';
     header('Location: ../register.php');
     exit;
 }
@@ -50,8 +52,9 @@ if ($stmt->num_rows > 0) {
 $stmt->close();
 
 $pw_hash = password_hash($password, PASSWORD_DEFAULT);
-$insert = $conn->prepare('INSERT INTO users (username, email, password_hash, created_at) VALUES (?, ?, ?, NOW())');
-$insert->bind_param('sss', $username, $email, $pw_hash);
+$answer_hash = password_hash(strtolower($security_answer), PASSWORD_DEFAULT);
+$insert = $conn->prepare('INSERT INTO users (username, email, password_hash, security_question, security_answer_hash, created_at) VALUES (?, ?, ?, ?, ?, NOW())');
+$insert->bind_param('sssss', $username, $email, $pw_hash, $security_question, $answer_hash);
 $ok = $insert->execute();
 $insert->close();
 $conn->close();

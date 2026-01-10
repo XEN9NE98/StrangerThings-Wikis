@@ -45,8 +45,8 @@ $result = $conn->query($query);
                         <strong style="color: var(--stranger-red);">Actor:</strong> 
                         <?php echo htmlspecialchars($character['actor_name']); ?>
                     </p>
-                    <p class="card-text">
-                        <?php echo htmlspecialchars(substr($character['description'], 0, 100)) . '...'; ?>
+                    <p class="card-text description-preview">
+                        <?php echo htmlspecialchars($character['description']); ?>
                     </p>
                     <div class="action-buttons d-flex flex-wrap justify-content-center">
                         <a href="view-character.php?id=<?php echo $character['id']; ?>" class="btn btn-sm btn-outline-stranger">

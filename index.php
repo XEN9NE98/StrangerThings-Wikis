@@ -14,7 +14,64 @@ $quoteOfDay = getQuoteOfTheDay();
 ?>
 
 <div class="container">
-    <!-- Page Header -->
+    <!-- Login Success Notification -->
+    <?php if (!empty($_SESSION['success'])): ?>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div id="loginNotification" class="alert alert-success alert-dismissible fade show login-notification" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle me-3" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <strong>Welcome, <?php echo htmlspecialchars($_SESSION['user']['username']); ?>!</strong>
+                            <p class="mb-0 mt-1"><?php echo htmlspecialchars($_SESSION['success']); ?></p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Auto-dismiss notification after 5 seconds
+            setTimeout(() => {
+                const alert = document.getElementById('loginNotification');
+                if (alert) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }
+            }, 5000);
+        </script>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+
+    <!-- Logout Notification -->
+    <?php if (!empty($_SESSION['logout_message'])): ?>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div id="logoutNotification" class="alert alert-warning alert-dismissible fade show logout-notification" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-sign-out-alt me-3" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <strong>Logged Out</strong>
+                            <p class="mb-0 mt-1"><?php echo htmlspecialchars($_SESSION['logout_message']); ?></p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Auto-dismiss notification after 5 seconds
+            setTimeout(() => {
+                const alert = document.getElementById('logoutNotification');
+                if (alert) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }
+            }, 5000);
+        </script>
+        <?php unset($_SESSION['logout_message']); ?>
+    <?php endif; ?>
+
     <div class="row">
         <div class="col-12">
             <div class="page-header">

@@ -51,8 +51,8 @@ $result = $conn->query($query);
                         <?php echo date('F d, Y', strtotime($episode['air_date'])); ?>
                     </p>
                     <?php endif; ?>
-                    <p class="card-text">
-                        <?php echo htmlspecialchars(substr($episode['description'], 0, 100)) . '...'; ?>
+                    <p class="card-text description-preview">
+                        <?php echo htmlspecialchars($episode['description']); ?>
                     </p>
                     <div class="action-buttons d-flex flex-wrap justify-content-center">
                         <a href="view-episode.php?id=<?php echo $episode['id']; ?>" class="btn btn-sm btn-outline-stranger">

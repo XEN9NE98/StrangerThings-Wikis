@@ -41,8 +41,8 @@ $result = $conn->query($query);
                      class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo htmlspecialchars($location['name']); ?></h5>
-                    <p class="card-text">
-                        <?php echo htmlspecialchars(substr($location['description'], 0, 120)) . '...'; ?>
+                    <p class="card-text description-preview">
+                        <?php echo htmlspecialchars($location['description']); ?>
                     </p>
                     <div class="action-buttons d-flex flex-wrap justify-content-center">
                         <a href="view-location.php?id=<?php echo $location['id']; ?>" class="btn btn-sm btn-outline-stranger">
