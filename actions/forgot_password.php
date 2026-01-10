@@ -24,9 +24,9 @@ $result = $stmt->get_result();
 $user = $result ? $result->fetch_assoc() : null;
 $stmt->close();
 
-// Do NOT reveal if email exists
+// Check if account exists
 if (!$user) {
-    echo "success";
+    echo "Account is not exist";
     $conn->close();
     exit;
 }

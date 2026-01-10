@@ -97,6 +97,8 @@ function sendReset() {
     .then(data => {
         if (data.includes("success")) {
             msg.innerHTML = "<span style='color:#00ff99'>Reset link sent! Check your email.</span>";
+        } else if (data.includes("Account is not exist")) {
+            msg.innerHTML = "<span style='color:#ff4d4d'>Account is not exist</span>";
         } else {
             msg.innerHTML = "<span style='color:#ff4d4d'>Failed to send reset link.</span>";
         }
